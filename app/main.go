@@ -7,6 +7,10 @@ import (
 )
 
 func handler(w http.ResponseWriter, req *http.Request) {
+	//Получаем hostname  
+	str, err := os.Hostname()
+	fmt.Fprintf(w, "Hostname: %v\n", str)
+	
 	// Получаем все доступные сетевые интерфейсы
 	interfaces, err := net.Interfaces()
 	if err != nil {
