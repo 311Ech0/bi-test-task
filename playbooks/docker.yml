@@ -23,8 +23,14 @@
           - docker-ce-cli 
           - containerd.io
         state: latest
-
+   
    -  name: starting docker service
       service:
         name: docker
-        state: started  
+        state: started
+   
+   -  name: enable docker service
+      command: systemctl enable docker
+  
+
+    

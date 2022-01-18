@@ -1,0 +1,17 @@
+---
+-  name: bild and run go App
+   hosts: srv2,srv3
+   become: true
+
+   tasks:
+    - name: Copy Dockerfile & App to host
+      copy:
+        src: ~/bi-test/app
+        dest: /var
+    
+    - name: build the image
+      command: docker build -t app-image /var/app
+    
+    - name: start application
+      command: docker run -it -d -p 80:8080 --rm --name app-net-show app-image 
+
