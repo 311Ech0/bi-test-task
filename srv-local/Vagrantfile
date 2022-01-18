@@ -1,0 +1,83 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  config.vm.define "srv1" do |srv1|
+    srv1.vm.box = "centos/7"
+    srv1.vm.hostname = "srv1"
+    srv1.vm.network "private_network", ip: "192.168.50.2"
+    srv1.vm.network "forwarded_port", guest: 80, host: 8082
+    srv1.ssh.forward_agent = true
+    srv1.vm.provision "shell", inline: <<-SHELL
+      sudo systemctl start firewalld
+      sudo firewall-cmd --zone=public --add-masquerade --permanent
+      sudo firewall-cmd --zone=public --add-service=http --permanent
+      sudo firewall-cmd --zone=public --add-forward-port=port=8082:proto=tcp:toport=80:toaddr=192.168.50.2 --permanent
+      sudo firewall-cmd --reload
+      sudo useradd -m -s /bin/bash -U admin -u 666 --groups wheel
+      sudo cp -pr /home/vagrant/.ssh /home/admin/
+      sudo chown -R admin:admin /home/admin
+      sudo echo "%admin ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
+    SHELL
+  end
+  config.vm.define "srv2" do |srv2|
+    srv2.vm.box = "centos/7"
+    srv2.vm.hostname = "srv2"
+    srv2.vm.network "private_network", ip: "192.168.50.3"
+    srv2.vm.network "forwarded_port", guest: 80, host: 8083
+    srv2.ssh.forward_agent = true
+    srv2.vm.provision "shell", inline: <<-SHELL
+      sudo systemctl start firewalld 
+      sudo firewall-cmd --zone=public --add-masquerade --permanent
+      sudo firewall-cmd --zone=public --add-service=http --permanent
+      sudo firewall-cmd --zone=public --add-forward-port=port=8083:proto=tcp:toport=80:toaddr=192.168.50.3 --permanent
+      sudo firewall-cmd --reload
+      sudo useradd -m -s /bin/bash -U admin -u 666 --groups wheel
+      sudo cp -pr /home/vagrant/.ssh /home/admin/
+      sudo chown -R admin:admin /home/admin
+      sudo echo "%admin ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
+    SHELL
+    end
+  config.vm.define "srv3" do |srv3|
+    srv3.vm.box = "centos/7"
+    srv3.vm.hostname = "srv3"
+    srv3.vm.network "private_network", ip: "192.168.50.4"
+    srv3.vm.network "forwarded_port", guest: 80, host: 8084
+    srv3.ssh.forward_agent = true
+    srv3.vm.provision "shell", inline: <<-SHELL
+      sudo systemctl start firewalld 
+      sudo firewall-cmd --zone=public --add-masquerade --permanent
+      sudo firewall-cmd --zone=public --add-service=http --permanent
+      sudo firewall-cmd --zone=public --add-forward-port=port=8084:proto=tcp:toport=80:toaddr=192.168.50.4 --permanent
+      sudo firewall-cmd --reload
+      sudo useradd -m -s /bin/bash -U admin -u 666 --groups wheel
+      sudo cp -pr /home/vagrant/.ssh /home/admin/
+      sudo chown -R admin:admin /home/admin
+      sudo echo "%admin ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
+    SHELL
+    end
+  config.vm.define "srv4" do |srv4|
+    srv4.vm.box = "centos/7"
+    srv4.vm.hostname = "srv4"
+    srv4.vm.network "private_network", ip: "192.168.50.5"
+    srv4.vm.network "forwarded_port", guest: 80, host: 8085
+    srv4.ssh.forward_agent = true
+    srv4.vm.provision "shell", inline: <<-SHELL
+      sudo systemctl start firewalld 
+      sudo firewall-cmd --zone=public --add-masquerade --permanent
+      sudo firewall-cmd --zone=public --add-service=http --permanent
+      sudo firewall-cmd --zone=public --add-forward-port=port=8085:proto=tcp:toport=80:toaddr=192.168.50.5 --permanent
+      sudo firewall-cmd --reload
+      sudo useradd -m -s /bin/bash -U admin -u 666 --groups wheel
+      sudo cp -pr /home/vagrant/.ssh /home/admin/
+      sudo chown -R admin:admin /home/admin
+      sudo echo "%admin ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/admin
+    SHELL
+    end
+  end
+  
+

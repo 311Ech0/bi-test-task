@@ -1,0 +1,30 @@
+---
+-  name: Install Docker
+   hosts: all
+   become: true
+
+   tasks:
+   -  name: add repository EPEL
+      yum:
+        name: epel-release
+        state: latest
+
+   -  name: install repo Docker
+      yum_repository:
+        description: repo for docker
+        name: docker-ce
+        baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
+        gpgcheck: no
+
+   -  name: install Docker-ce
+      yum:
+        name: 
+          - docker-ce
+          - docker-ce-cli 
+          - containerd.io
+        state: latest
+
+   -  name: starting docker service
+      service:
+        name: docker
+        state: started  
