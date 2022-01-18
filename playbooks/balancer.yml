@@ -4,7 +4,16 @@
    become: true
 
    tasks:
-    - name: Copy nginx.conf to host
+    # - name: Copy nginx.conf to host
+    #   copy:
+    #     src: ~/bi-test/srv-local/ngnix/
+    #     dest: /etc/nginx/
+    - name: Copy Dockerfile & nginx.conf to host
       copy:
         src: ~/bi-test/srv-local/ngnix/
-        dest: /etc/nginx/
+        dest: /var/nginx
+    - name: build the image nginx
+      command: docker build -t nginx-balancer /var/nginx
+    
+    - name: start nginx-balancer container
+      command: docker run -it -d -p 80:80 --rm --name balancer nginx-balancer 

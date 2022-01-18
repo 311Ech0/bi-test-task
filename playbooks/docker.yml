@@ -31,6 +31,3 @@
    
    -  name: enable docker service
       command: systemctl enable docker
-  
-
-    
