@@ -1,0 +1,10 @@
+---
+-  name: nginx create balancer
+   hosts: srv1
+   become: true
+
+   tasks:
+    - name: Copy nginx.conf to host
+      copy:
+        src: ~/bi-test/srv-local/ngnix/
+        dest: /etc/nginx/
